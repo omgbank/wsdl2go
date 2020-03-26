@@ -33,7 +33,9 @@ type RoundTripper interface {
 type Message interface{}
 
 // Header is an opaque type used as the SOAP Header element in requests.
-type Header interface{}
+type Header interface {
+	GetHeader() string
+}
 
 // AuthHeader is a Header to be encoded as the SOAP Header element in
 // requests, to convey credentials for authentication.
@@ -104,7 +106,7 @@ func doRoundTrip(c *Client, setHeaders func(*http.Request), in, out Message) err
 		NSAttr:       c.Namespace,
 		TNSAttr:      c.ThisNamespace,
 		XSIAttr:      XSINamespace,
-		Header:       c.Header,
+		Header:       c.Header.GetHeader(),
 		Body:         in,
 	}
 
